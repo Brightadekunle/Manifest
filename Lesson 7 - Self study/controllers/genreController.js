@@ -98,22 +98,103 @@ const genre_create_post = function(req, res, next) {
 
 // Display Genre delete form on GET.
 const genre_delete_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Genre delete GET');
+    async.parallel({
+        genre: function(callback) {
+            Genre.findById(req.params.id).exec(callback)
+        },
+        // authors_books: function(callback) {
+        //   Book.find({ 'author': req.params.id }).exec(callback)
+        // },
+    }, function(err, results) {
+        if (err) { return next(err); }
+        if (results.genre==null) { // No results.
+            res.redirect('/catalog/genres');
+        }
+        // Successful, so render.
+        res.render('genre_delete', { title: 'Delete Genre', genre: results.genre, } );
+    });
 };
 
 // Handle Genre delete on POST.
 const genre_delete_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Genre delete POST');
+    async.parallel({
+        genre: function(callback) {
+          Genre.findById(req.body.genreid).exec(callback)
+        },
+        
+    }, function(err, results) {
+        if (err) { return next(err); }
+        // Success
+
+        res.render('genre_delete', { title: 'Delete Genre', genre: results.genre } );
+ 
+        // Author has no books. Delete object and redirect to the list of authors.
+        Book.findByIdAndRemove(req.body.genreid, function deleteGenre(err) {
+            if (err) { return next(err); }
+            // Success - go to author list
+            res.redirect('/catalog/genres')
+        })
+    });
 };
 
 // Display Genre update form on GET.
 const genre_update_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Genre update GET');
+    // Get book, authors and genres for form.
+    async.parallel({
+        genre: function(callback) {
+            Genre.findById(req.params.id);
+        },
+        
+        }, function(err, results) {
+            if (err) { return next(err); }
+            if (results.genre==null) { // No results.
+                var err = new Error('Book not found');
+                err.status = 404;
+                return next(err);
+            }
+            
+            res.render('genre_form', { title: 'Update Genre', genres: results.genre, });
+        });
 };
 
 // Handle Genre update on POST.
 const genre_update_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Genre update POST');
+
+    // Validate and sanitise fields.
+    body('name', 'Genre name required').trim().isLength({ min: 1 }).escape()
+
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    // Create a Book object with escaped/trimmed data and old id.
+    var book = new Book(
+      { name: req.body.name,
+        _id:req.params.id //This is required, or a new ID will be assigned!
+       });
+
+    if (!errors.isEmpty()) {
+        // There are errors. Render form again with sanitized values/error messages.
+
+        // Get all authors and genres for form.
+        async.parallel({
+            genre: function(callback) {
+                Genre.find(callback);
+            },
+        }, function(err, results) {
+            if (err) { return next(err); }
+
+            res.render('genre_form', { title: 'Update Genre', genre: results.genres });
+        });
+        return;
+    }
+    else {
+        // Data from form is valid. Update the record.
+        Genre.findByIdAndUpdate(req.params.id, genre, {}, function (err,thegenre) {
+            if (err) { return next(err); }
+               // Successful - redirect to book detail page.
+               res.redirect(thegenre.url);
+            });
+    }
 };
 
 module.exports = {
