@@ -31,14 +31,14 @@ const author_detail = function(req, res, next) {
         }
     }, (err, results) => {
         if (err) { return next(err) }
-        console.log(results.author_books.length)
         if (results.author == null){
             var err = new Error('Author not found');
             err.status = 404;
             return next(err);
         }
         // Successful, so render.
-        res.render('author_detail', { title: 'Author Detail', author: results.author, author_books: results.authors_books, hasLength: results.author_books.length > 0 } );
+        // console.log()
+        res.render('author_detail', { title: 'Author Detail', author: results.author, author_books: results.author_books,  } );
     })
 };
 

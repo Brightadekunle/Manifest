@@ -11,8 +11,8 @@ const mongoose = require('mongoose')
 
 const app = express();
 
-// const mongoDB = "mongodb+srv://Bright:adekunle3333@cluster0.lroeh.gcp.mongodb.net/locallibrary?retryWrites=true&w=majority"
-var mongoDB = 'mongodb://127.0.0.1:27017/locallibrary';
+const mongoDB = "mongodb+srv://Bright:adekunle3333@cluster0.lroeh.gcp.mongodb.net/locallibrary?retryWrites=true&w=majority"
+// var mongoDB = 'mongodb://127.0.0.1:27017/locallibrary';
 mongoose.connect(mongoDB, { useUnifiedTopology: true, useNewUrlParser: true })
     .then(() => console.log("Database connected..."))
     .catch(err => console.log(`MongoDB Error - ${err}`))
