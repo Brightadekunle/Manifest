@@ -86,14 +86,6 @@ const book_create_get = function(req, res, next) {
 
 // Handle book create on POST.
 const book_create_post = function(req, res, next) {
-    
-    if(!(req.body.genre instanceof Array)){
-        if(typeof req.body.genre ==='undefined')
-        req.body.genre = [];
-        else
-        req.body.genre = new Array(req.body.genre);
-    }
-    next();
 
     // Validate and sanitise fields.
     body('title', 'Title must not be empty.').trim().isLength({ min: 1 }).escape(),
@@ -173,6 +165,7 @@ const book_delete_get = function(req, res) {
 
 // Handle book delete on POST.
 const book_delete_post = function(req, res) {
+    console.log(req.body.bookid)
     async.parallel({
         book: function(callback) {
           Book.findById(req.body.bookid).exec(callback)
@@ -182,12 +175,11 @@ const book_delete_post = function(req, res) {
         if (err) { return next(err); }
         // Success
 
-        res.render('author_delete', { title: 'Delete Book', book: results.book } );
- 
         // Author has no books. Delete object and redirect to the list of authors.
-        Book.findByIdAndRemove(req.body.bookid, function deleteBook(err) {
+        Book.findByIdAndRemove(req.body.bookid, function (err, deletedBook) {
             if (err) { return next(err); }
-            // Success - go to author list
+
+            // Success - go to book list
             res.redirect('/catalog/books')
         })
     });
@@ -228,13 +220,6 @@ const book_update_get = function(req, res, next) {
 
 // Handle book update on POST.
 const book_update_post = function(req, res, next) {
-    if(!(req.body.genre instanceof Array)){
-        if(typeof req.body.genre==='undefined')
-        req.body.genre=[];
-        else
-        req.body.genre=new Array(req.body.genre);
-    }
-    next();
 
     // Validate and sanitise fields.
     body('title', 'Title must not be empty.').trim().isLength({ min: 1 }).escape(),

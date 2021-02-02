@@ -3,11 +3,15 @@ var Book = require('../models/book');
 
 const { body,validationResult } = require('express-validator');
 
+const async = require('async')
+
 // Display list of all BookInstances.
 const bookinstance_list = function(req, res) {
     BookInstance.find()
         .populate('book')
         .then(function(list_bookinstances) {
+
+            console.log(list_bookinstances)
             // Successful, so render
             res.render('bookinstance_list', { title: 'Book Instance List', bookinstance_list: list_bookinstances });
     })
@@ -105,20 +109,42 @@ const bookinstance_delete_get = function(req, res) {
 
 // Handle BookInstance delete on POST.
 const bookinstance_delete_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: BookInstance delete POST');
+
+    console.log(req.body)
+    async.parallel({
+        bookInstance: function(callback) {
+          BookInstance.findById(req.body.bookInstanceid).exec(callback)
+        },
+        
+    }, function(err, results) {
+        if (err) { return next(err); }
+        // Success
+ 
+        // Author has no books. Delete object and redirect to the list of authors.
+        BookInstance.findByIdAndRemove(req.body.bookInstanceid, function (err, deletedBookInstance) {
+            if (err) { return next(err); }
+            // Success - go to author list
+
+            console.log("Genre deleted successfully")
+            res.redirect('/catalog/bookinstances')
+        })
+    });
 };
 
 // Display BookInstance update form on GET.
 const bookinstance_update_get = function(req, res) {
     // Get book, authors and genres for form.
+
     async.parallel({
         book: function(callback) {
-            Book.findById(req.params.id).populate('author').populate('genre').exec(callback);
+            Book.find().exec(callback);
         },
         bookInstance: function(callback) {
-            BookInstance.find(callback);
+            BookInstance.findById(req.params.id)
+                .exec(callback)
         },
         }, function(err, results) {
+            console.log(results.book)
             if (err) { return next(err); }
             if (results.bookInstance == null) { // No results.
                 var err = new Error('BookInstance not found');
@@ -134,7 +160,7 @@ const bookinstance_update_get = function(req, res) {
             //         }
             //     }
             // }
-            res.render('bookinstance_form', { title: 'Update BookInstance', bookInstance: results.bookInstance });
+            res.render('bookinstance_form', { title: 'Update BookInstance', bookInstance: results.bookInstance, book_list: results.book });
         });
 };
 
@@ -151,7 +177,7 @@ const bookinstance_update_post = function(req, res) {
     const errors = validationResult(req);
 
     // Create a Book object with escaped/trimmed data and old id.
-    var bookInstance = new Book(
+    var bookInstance = new BookInstance(
       { book: req.body.book,
         imprint: req.body.imprint,
         status: req.body.status,
@@ -167,6 +193,8 @@ const bookinstance_update_post = function(req, res) {
         BookInstance.findByIdAndUpdate(req.params.id, bookInstance, {}, function (err,thebookInstance) {
             if (err) { return next(err); }
                // Successful - redirect to book instance detail page.
+
+               console.log("Book instance updated successfully")
                res.redirect(thebookInstance.url);
             });
     }

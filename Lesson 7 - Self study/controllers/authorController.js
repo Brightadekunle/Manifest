@@ -135,11 +135,12 @@ const author_delete_post = function(req, res) {
 };
 
 // Display Author update form on GET.
-const author_update_get = function(req, res) {
+const author_update_get = function(req, res, next) {
       // Get book, authors and genres for form.
       async.parallel({
         author: function(callback) {
-            Author.findById(req.params.id);
+            Author.findById(req.params.id)
+                .exec(callback)
         },
         // authors: function(callback) {
         //     Author.find(callback);
@@ -150,6 +151,7 @@ const author_update_get = function(req, res) {
         }, function(err, results) {
             if (err) { return next(err); }
             if (results.author==null) { // No results.
+                console.log(results.author)
                 var err = new Error('Author not found');
                 err.status = 404;
                 return next(err);
@@ -163,13 +165,16 @@ const author_update_get = function(req, res) {
             //         }
             //     }
             // }
-            res.render('author_form', { title: 'Update Author', authors: results.author,  });
+            // console.log(results.author)
+            res.render('author_form', { title: 'Update Author', authors: results.author, author: results.author  });
         });
 };
 
 // Handle Author update on POST.
 const author_update_post = function(req, res) {
     // Validate and sanitise fields.
+
+    // console.log(req.params)
     body('first_name').trim().isLength({ min: 1 }).escape().withMessage('First name must be specified.')
         .isAlphanumeric().withMessage('First name has non-alphanumeric characters.'),
     body('family_name').trim().isLength({ min: 1 }).escape().withMessage('Family name must be specified.')
@@ -195,7 +200,7 @@ const author_update_post = function(req, res) {
                 family_name: req.body.family_name,
                 date_of_birth: req.body.date_of_birth,
                 date_of_death: req.body.date_of_death,
-                _id: params.id //This is required, or a new ID will be assigned!
+                _id: req.params.id //This is required, or a new ID will be assigned!
             });
         if (!errors.isEmpty()){
              
@@ -204,6 +209,7 @@ const author_update_post = function(req, res) {
             Author.findByIdAndUpdate(req.params.id, author, {}, function (err,theauthor) {
                 if (err) { return next(err); }
                 // Successful - redirect to author detail page.
+                console.log("Updated successfully")
                 res.redirect(theauthor.url);
                 });
         }

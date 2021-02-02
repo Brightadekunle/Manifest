@@ -11,8 +11,8 @@ const mongoose = require('mongoose')
 
 const app = express();
 
-// const DB_URI = "mongodb+srv://Bright:<password>@cluster0.lroeh.gcp.mongodb.net/<dbname>?retryWrites=true&w=majority"
-var mongoDB = 'mongodb://127.0.0.1/locallibrary';
+// const mongoDB = "mongodb+srv://Bright:adekunle3333@cluster0.lroeh.gcp.mongodb.net/locallibrary?retryWrites=true&w=majority"
+var mongoDB = 'mongodb://127.0.0.1:27017/locallibrary';
 mongoose.connect(mongoDB, { useUnifiedTopology: true, useNewUrlParser: true })
     .then(() => console.log("Database connected..."))
     .catch(err => console.log(`MongoDB Error - ${err}`))
@@ -58,8 +58,7 @@ app.use(function(err, req, res, next) {
 });
 
 
-
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`)

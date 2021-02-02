@@ -35,7 +35,7 @@ const genre_detail = function(req, res) {
         }
     }, function(err, results) {
         if (err) { return next(err) }
-        if (results.genre == "null"){
+        if (results.genre == null){
             var err = new Error("Genre Not Found")
             err.status = 404
             return next(err)
@@ -117,6 +117,8 @@ const genre_delete_get = function(req, res) {
 
 // Handle Genre delete on POST.
 const genre_delete_post = function(req, res) {
+
+    console.log(req.body.genreid)
     async.parallel({
         genre: function(callback) {
           Genre.findById(req.body.genreid).exec(callback)
@@ -125,13 +127,13 @@ const genre_delete_post = function(req, res) {
     }, function(err, results) {
         if (err) { return next(err); }
         // Success
-
-        res.render('genre_delete', { title: 'Delete Genre', genre: results.genre } );
  
         // Author has no books. Delete object and redirect to the list of authors.
-        Book.findByIdAndRemove(req.body.genreid, function deleteGenre(err) {
+        Genre.findByIdAndRemove(req.body.genreid, function (err, deletedGenre) {
             if (err) { return next(err); }
             // Success - go to author list
+
+            console.log("Genre deleted successfully")
             res.redirect('/catalog/genres')
         })
     });
@@ -142,7 +144,8 @@ const genre_update_get = function(req, res) {
     // Get book, authors and genres for form.
     async.parallel({
         genre: function(callback) {
-            Genre.findById(req.params.id);
+            Genre.findById(req.params.id)
+                .exec(callback)
         },
         
         }, function(err, results) {
@@ -153,7 +156,7 @@ const genre_update_get = function(req, res) {
                 return next(err);
             }
             
-            res.render('genre_form', { title: 'Update Genre', genres: results.genre, });
+            res.render('genre_form', { title: 'Update Genre', genres: results.genre, genre: results.genre });
         });
 };
 
@@ -167,7 +170,7 @@ const genre_update_post = function(req, res) {
     const errors = validationResult(req);
 
     // Create a Book object with escaped/trimmed data and old id.
-    var book = new Book(
+    var genre = new Genre(
       { name: req.body.name,
         _id:req.params.id //This is required, or a new ID will be assigned!
        });
@@ -191,6 +194,7 @@ const genre_update_post = function(req, res) {
         // Data from form is valid. Update the record.
         Genre.findByIdAndUpdate(req.params.id, genre, {}, function (err,thegenre) {
             if (err) { return next(err); }
+
                // Successful - redirect to book detail page.
                res.redirect(thegenre.url);
             });
