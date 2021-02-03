@@ -1,7 +1,5 @@
 const models = require('../models')
 
-const async = require('async')
-
 
 const createPost = (req, res, next) => {
     const username = req.body.username
@@ -15,6 +13,7 @@ const createPost = (req, res, next) => {
             console.log("User created successfully..........")
             res.redirect('/')
         })
+        .catch(err => console.log(err))
 }
 
 const getUserDelete = (req, res, next) => {
@@ -27,6 +26,7 @@ const getUserDelete = (req, res, next) => {
             console.log("User deleted successfully.............")
             res.redirect('/')
         })
+        .catch(err => console.log(err))
 }
 
 const createTeamBrightPost = (req, res, next) => {
@@ -40,6 +40,7 @@ const createTeamBrightPost = (req, res, next) => {
             console.log("Team bright member created successfully")
             res.redirect('/')
         })
+        .catch(err => console.log(err))
 
 }
 
@@ -54,6 +55,7 @@ const getUserTeamBrightDelete = (req, res, next) => {
             console.log("Team bright member deleted successfully")
             res.redirect('/')
         })
+        .catch(err => console.log(err))
 }
 
 const updateUserGet = (req, res, next) => {
@@ -71,6 +73,7 @@ const updateUserGet = (req, res, next) => {
             })  
             
         })
+        .catch(err => console.log(err))
 }
 
 const updateUserPost = (req, res, next) => {
@@ -85,6 +88,7 @@ const updateUserPost = (req, res, next) => {
         .then((result) => {
             res.redirect('/')
         })
+        .catch(err => console.log(err))
 }
 
 const updateTeamBrightGet = (req, res, next) => {
@@ -102,6 +106,7 @@ const updateTeamBrightGet = (req, res, next) => {
             })  
             
         })
+        .catch(err => console.log(err))
 }
 
 const updateTeamBrightPost = (req, res, next) => {
@@ -116,6 +121,7 @@ const updateTeamBrightPost = (req, res, next) => {
         .then((result) => {
             res.redirect('/')
         })
+        .catch(err => console.log(err))
 }
 
 module.exports = {
