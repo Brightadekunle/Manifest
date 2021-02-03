@@ -1,0 +1,49 @@
+
+
+<h1><%= title %></h1>
+
+<div class="d-flex justify-content-between">
+  <div class="col-md-4" style="padding: 25px; background-color: #eee; height: 30vh; margin-top: 15px;">
+    <h2>Create User</h2>
+
+    <form action="/users/create" method="POST" class="well">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" name="username" class="form-control">
+            <input type="submit" class="btn btn-secondary mt-3" style="width: 100%;">
+        </div>
+    </form>
+</div>
+
+    <div class="col-md-6">
+        <h2>
+            Users in TeamBright
+        </h2>
+        <ul>
+            <% for (user of users) { %>
+            <li><strong><%= user.username %></strong>&nbsp;<a class="btn btn-xs btn-warning mr-2" href="/users/<%= user.id %>/delete">delete user</a><a class="btn btn-xs btn-primary" href="/users/<%= user.id %>/update">Update </a>
+              <ul>
+                <li>Create a teambright record
+                    
+                  <form class="form-inline" action="/users/<%= user.id %>/teambright/create" method="post">
+                    <div class="form-group">
+                        <div class="d-flex" style="flex-direction: column;">
+                          <input class="input-sm form-control" type="text" name="name"/ style="margin-bottom: 10px;">
+                          <input class="btn btn-secondary" type="submit"/>
+                        </div>
+                    </div>
+                   
+                  </form>
+                </li>
+                <% for (teambright of user.Teambrights) { %>
+                  <li><%= teambright.name %>&nbsp;<a class="btn btn-xs btn-warning mr-2" href="/users/<%= user.id %>/teambright/<%= teambright.id %>/delete">delete </a><a class="btn btn-xs btn-primary" href="/users/teambright/<%= teambright.id %>/update">Update </a></li>
+                  <% } %>
+                <% } %>
+              </ul>
+            </li>
+          </ul>
+    </div>
+
+
+
+</div>
