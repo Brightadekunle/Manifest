@@ -1,0 +1,27 @@
+{
+  "name": "node-api-example",
+  "version": "1.0.0",
+  "description": "A simple API built in Node and Express hosted on Heroku",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "start-dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "cors": "2.8.1",
+    "ejs": "^3.0.1",
+    "express": "4.13.3",
+    "express-ejs-layouts": "^2.5.0",
+    "nodemon": "^2.0.2",
+    "path": "^0.12.7"
+  },
+  "engines": {
+    "node": "5.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/coryhouse/js-dev-env-demo-api"
+  },
+  "author": "Cory House",
+  "license": "MIT"
+}
