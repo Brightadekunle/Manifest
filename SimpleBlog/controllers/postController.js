@@ -5,6 +5,7 @@ const postCreatePost = (req, res, next) => {
     models.Post.create({
         post_title: req.body.post_title,
         post_body: req.body.post_body,
+        authorId: req.body.authorId,
     })
         .then(post => {
             res.status(201).json({
@@ -19,6 +20,7 @@ const postUpdatePost = (req, res, next) => {
     models.Post.update({
         post_title: req.body.post_title,
         post_body: req.body.post_body,
+        authorId: req.body.authorId,
     }, {
         where: {
             id: req.params.post_id

@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     PostCategory.belongsTo(models.Post)
     PostCategory.belongsTo(models.Category)
   }
-  return Category;
+  return PostCategory;
 };
 
 // Make sure you complete other models fields

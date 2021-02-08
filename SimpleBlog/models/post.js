@@ -9,9 +9,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     post_title: DataTypes.STRING,
     post_body: DataTypes.STRING,
+    authorId: DataTypes.INTEGER,
   });
 
   Post.associate = (models) => {
+    Post.belongsTo(models.Author)
     Post.hasMany(models.Comment)
     Post.belongsToMany(models.Category, { through: "PostCategory" } )
   }

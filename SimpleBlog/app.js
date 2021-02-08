@@ -23,10 +23,10 @@ const postRoutes = require('./routes/postRoutes')
 const commentRoutes = require('./routes/commentRoutes')
 const categoryRoutes = require('./routes/categoryRoutes')
 
-app.use('/author', authorRoutes)
-app.use('/post', postRoutes)
-app.use('/comment', commentRoutes)
-app.use('/category', categoryRoutes)
+app.use('/blog/author', authorRoutes)
+app.use('/blog/post', postRoutes)
+app.use('/blog/comment', commentRoutes)
+app.use('/blog/category', categoryRoutes)
 
 
 // catch 404 and forward to error handler
@@ -52,38 +52,3 @@ const PORT = process.env.PORT || 8080
 models.sequelize.sync().then(() => {
     app.listen(PORT, console.log(`listening on PORT ${PORT}`))
 })
-
-
-// // Creating tables
-// Table Category {
-//     id int [pk, increment] // auto-increment
-//     name varchar
-//   }
-  
-//   Table Author {
-//     id int [pk, increment] // auto-increment
-//     first_name varchar
-//     last_name varchar
-//     email varchar
-//     username varchar
-//     create_date timestamp
-//   }
-  
-//   Table Post {
-//     id int [pk, increment] // auto-increment
-//     post_title varchar
-//     post_body varchar
-//   }
-  
-//   Table Comment {
-//     id int [pk, increment] // auto-increment
-//     body varchar
-//     postId int
-//     authorId int
-//   }
-  
-//   Table PostCategory {
-//     categoryId int
-//     postId int
-//   }
-  
