@@ -5,7 +5,7 @@ const postCreatePost = (req, res, next) => {
     models.Post.create({
         post_title: req.body.post_title,
         post_body: req.body.post_body,
-        authorId: req.body.authorId,
+        AuthorId: req.body.authorId,
     })
         .then(post => {
             res.status(201).json({

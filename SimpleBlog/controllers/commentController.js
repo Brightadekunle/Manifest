@@ -4,8 +4,8 @@ const commentCreatePost = (req, res, next) => {
 
     models.Comment.create({
         body: req.body.body,
-        authorId: req.body.authorId,
-        postId: req.body.postId,
+        AuthorId: req.body.authorId,
+        PostId: req.body.postId,
     })
         .then(comment => {
             res.status(201).json({

@@ -9,7 +9,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     post_title: DataTypes.STRING,
     post_body: DataTypes.STRING,
-    authorId: DataTypes.INTEGER,
   });
 
   Post.associate = (models) => {

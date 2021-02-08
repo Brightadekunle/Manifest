@@ -9,8 +9,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER
     },
     body: DataTypes.STRING,
-    postId: DataTypes.INTEGER,
-    authorId: DataTypes.INTEGER
   });
 
   Comment.associate = (models) => {
