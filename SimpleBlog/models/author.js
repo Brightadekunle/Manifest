@@ -1,7 +1,5 @@
 'use strict';
 
-const { REPL_MODE_SLOPPY } = require("repl");
-
 module.exports = (sequelize, DataTypes) => {
   var Author = sequelize.define('Author', {
   id: {
@@ -13,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   first_name: DataTypes.STRING,
   last_name: DataTypes.STRING,
   username: DataTypes.STRING,
+  password: DataTypes.STRING,
   email: {
         type: DataTypes.STRING,
         allowNull: false,

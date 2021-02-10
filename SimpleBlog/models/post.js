@@ -12,9 +12,9 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Post.associate = (models) => {
-    Post.belongsTo(models.Author)
+    Post.belongsTo(models.Author, { onDelete: "CASCADE", foreignKey: { allowNull: false } })
     Post.hasMany(models.Comment)
-    Post.belongsToMany(models.Category, { through: "PostCategory" } )
+    Post.belongsToMany(models.Category, { through: 'PostCategory' })
   }
   return Post;
 };

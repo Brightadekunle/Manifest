@@ -1,0 +1,43 @@
+<div class="content-section">
+    <form method="POST" action="">
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4"><% title %></legend>
+            <div class="form-group">
+                <h5>Title</h5>
+                <input type="text" name="post_title" class="form-control">
+            </div>
+            <div class="form-group">
+                <h5>Post Body</h5>
+                <textarea type="" cols="30" rows="10" name="post_body" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <% categories.forEach(function(category) { %>
+                <input type="checkbox" class='categoryCheckbox' name="categories" id="<%= category.id %>" value="<%= category.id %>">
+               <label for="<%= category.name %>"><%= category.name %></label>                 
+                <% }) %>
+            </div>
+
+        </fieldset>
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary" onclick="checkCat()" value="Create Post">
+        </div>
+    </form>
+</div>
+
+<script>
+    function checkCat() {
+    var checkBoxes = document.getElementsByClassName( 'categoryCheckbox' );
+    var isChecked = false;
+    for (var i = 0; i < checkBoxes.length; i++) {
+        if ( checkBoxes[i].checked ) {
+            isChecked = true;
+        };
+    };
+    if ( isChecked ) {
+        
+        } else {
+            console.log('Please, check at least one checkbox!')
+            alert( 'Please, check at least one checkbox!' );
+        }   
+}
+</script>

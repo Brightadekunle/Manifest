@@ -1,8 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var PostCategory = sequelize.define('PostCategory', {
-    postId: DataTypes.INTEGER,
-    categoryId: DataTypes.INTEGER
   });
 
   PostCategory.associate = (models) => {

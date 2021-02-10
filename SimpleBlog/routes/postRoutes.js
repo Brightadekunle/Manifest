@@ -4,12 +4,15 @@ const router = express.Router()
 
 const postController = require('../controllers/postController')
 
+router.get('/create', postController.postCreateGet)
 
 router.post('/create', postController.postCreatePost)
 
+router.get('/update/:post_id', postController.postUpdateGet)
+
 router.post('/update/:post_id', postController.postUpdatePost)
 
-router.delete('/delete/:post_id', postController.postDeletePost)
+router.post('/delete/:post_id', postController.postDeletePost)
 
 router.get('/posts', postController.postDetailAllGet)
 

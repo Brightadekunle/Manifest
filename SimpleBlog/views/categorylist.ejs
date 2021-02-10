@@ -1,0 +1,8 @@
+<% categories.forEach(function(category) { %>
+    <li style="list-style: none;">
+        <h4><%= category.name %></h4>
+         <a class="btn btn-primary" href="/blog/category/update/<%= category.id %>">Edit Category</a> | <a class="btn btn-danger" href="/blog/category/delete/<%= category.id %>">Delete Category</a>
+    </li>
+    <br/>
+    <br>
+<% }); %>
