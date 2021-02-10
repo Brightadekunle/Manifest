@@ -4,17 +4,47 @@
       <div class="article-metadata">
         <a class="mr-2" href="/blog/author/<%= post.Author.id %>"><%= post.Author.username %></a>
         <small class="text-muted"><%= post.createdAt %></small>
-        <!-- {% if post.author == current_user %} -->
+        <% if (post.Author.username == loggedInUser.username) { %>
           <div>
             <a class="btn btn-secondary btn-sm mt-1 mb-1" href="/blog/post/update/<%= post.id %>">Update</a>
             <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
           </div>
-        <!-- {% endif %} -->
+        <% } %>
       </div>
       <h2 class="article-title"><%= post.post_title %></h2>
       <p class="article-content"><%= post.post_body %></p>
     </div>
   </article>
+
+  <div class="card my-4">
+    <div class="card-header">
+        Leave a comment
+    </div>
+
+    <div class="card-body">
+        <form action="/blog/comment/create/post/<%= post.id %>" method="POST">
+            <div class="form-group">
+                <textarea name="comment" class="form-control"></textarea>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Post comment">
+        </form>
+    </div>
+</div>
+
+<div id="comments">
+  <% post.Comments.forEach(comment => { %>
+  <div class="media mb-4">
+      <img src="" class="d-flex mr-3 comment-img" onerror="this.src = 'http://placehold.it/100x100'">
+      <div class="media-body">
+          <h5 class="mt-0"><%= comment.Author %></h5>
+          <%= comment.body %>
+          
+      </div>
+  </div>
+  <% }) %>
+</div>
+
+
   <!-- Modal -->
   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

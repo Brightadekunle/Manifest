@@ -9,7 +9,7 @@ const postCreateGet = async (req, res, next) => {
 const postCreatePost = (req, res, next) => {
 
     let postCat = req.body.categories
-    console.log(postCat)
+    console.log(typeof postCat)
     models.Post.create({
         post_title: req.body.post_title,
         post_body: req.body.post_body,
@@ -20,16 +20,27 @@ const postCreatePost = (req, res, next) => {
             //     message: "Post created successfully",
             //     Post: post
             // })
-            for (var id of postCat){
+            if (postCat.length == 1){
                 models.PostCategory.create({
-                    PostId: post.id,
-                    CategoryId: id
+                    PostId: parseInt(post.id),
+                    CategoryId: parseInt(postCat)
                 })
-                    .then(postCaregories => {
-                        console.log(postCaregories)
+                    .then(() => {
                         res.redirect('/blog')
                     })
-                    .catch(err => console.log(err))
+            } else {
+                for (var id of postCat){
+                    // console.log(id)
+                    models.PostCategory.create({
+                        PostId: post.id,
+                        CategoryId: id
+                    })
+                        .then(postCaregories => {
+                            // console.log(postCaregories)
+                            res.redirect('/blog')
+                        })
+                        .catch(err => console.log(err))
+                }
             }
             
         })
@@ -88,16 +99,21 @@ const postDeletePost = (req, res, next) => {
 
 const postDetailOneGet = (req, res, next) => {
     models.Post.findByPk(req.params.post_id, {
-        include: [models.Author]
+        include: [models.Author, models.Comment]
     })
         .then(post => {
-            console.log(post)
+            // console.log(post)
             // res.status(200).json({
             //     message: "These are the details of a single post.",
             //     PostDetails: post
             // })
-
-            res.render('post', { title: "Post Page", post: post })
+            models.Comment.findAll(post.id, {
+                include: [models.Author]
+            })
+                .then((comments) => {
+                    res.render('post', { title: "Post Page", post: post, comments })
+                })
+                .catch(err => console.log(err))
         })
         .catch(err => console.log(err))
         

@@ -22,8 +22,8 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Author.associate = (models) => {
-    Author.hasMany(models.Post)
-    Author.hasMany(models.Comment)
+    Author.hasMany(models.Post, { onDelete: "CASCADE", })
+    Author.hasMany(models.Comment, { onDelete: "CASCADE", })
   }
 
   return Author;

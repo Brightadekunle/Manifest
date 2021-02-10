@@ -2,16 +2,18 @@ const models = require('../models')
 
 const commentCreatePost = (req, res, next) => {
 
+    let postId = parseInt(req.params.postId)
     models.Comment.create({
-        body: req.body.body,
-        AuthorId: req.body.authorId,
-        PostId: req.body.postId,
+        body: req.body.comment,
+        AuthorId: req.user.id,
+        PostId: postId,
     })
         .then(comment => {
-            res.status(201).json({
-                message: "Comment created successfully",
-                comment: comment
-            })
+            // res.status(201).json({
+            //     message: "Comment created successfully",
+            //     comment: comment
+            // })
+            res.redirect(`/blog/post/${postId}`)
         })
         .catch(err => console.log(err))
 }

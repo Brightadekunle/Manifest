@@ -11,7 +11,11 @@ function isValidPassword(userpassword, password){
 const initialize = function(passport){
     passport.use(
         new Strategy({ usernameField: 'email' }, (email, password, done) => {
-            models.Author.findOne({ email: email })
+            models.Author.findOne({
+                where: {
+                    email: email
+                }
+            })
                 .then(user => {
                     console.log('user-', user)
                     if (!user){

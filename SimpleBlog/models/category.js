@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Category.associate = (models) => {
-    Category.belongsToMany(models.Post, { through: 'PostCategory' })
+    Category.belongsToMany(models.Post, { onDelete: "CASCADE", through: 'PostCategory' })
   }
   return Category;
 };

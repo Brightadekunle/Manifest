@@ -5,7 +5,7 @@ const router = express.Router()
 const commentController = require('../controllers/commentController')
 
 
-router.post('/create', commentController.commentCreatePost)
+router.post('/create/post/:postId', commentController.commentCreatePost)
 
 router.post('/update/:comment_id', commentController.commentUpdatePost)
 
