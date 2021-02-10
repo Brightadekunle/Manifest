@@ -13,6 +13,7 @@ const initialize = function(passport){
         new Strategy({ usernameField: 'email' }, (email, password, done) => {
             models.Author.findOne({ email: email })
                 .then(user => {
+                    console.log('user-', user)
                     if (!user){
                         return done(null, false, { message: 'Email is not registered' })
                     }
@@ -20,6 +21,7 @@ const initialize = function(passport){
                         return done(null, false, { message: 'Invalid Password' })
                     }
                     const userInfo = user
+                    // console.log(userInfo)
                     return done(null, userInfo)
                 })
                 .catch(err => {

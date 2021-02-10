@@ -6,11 +6,13 @@ const ejsLayout = require('express-ejs-layouts')
 const session = require('cookie-session')
 const flash = require('connect-flash')
 const passport = require('passport')
+const fileUpload = require('express-fileupload')
 const models = require('./models')
 const initializePassport = require('./config/passport')
 
 
 var app = express();
+// 09036925182
 
 initializePassport(passport)
 
@@ -41,9 +43,13 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(flash())
 
+// File upload middleware
+app.use(fileUpload())
+
 app.use(function (req, res, next) {
   res.locals.login = req.isAuthenticated()
   res.locals.error = req.flash('error')
+  res.locals.loggedInUser = req.user
   next()
 })
 

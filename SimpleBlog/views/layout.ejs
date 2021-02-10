@@ -30,17 +30,25 @@
               <a class="nav-item nav-link" href="/blog/about">About</a>
             </div>
             <!-- Navbar Right Side -->
+            <div class="nav-item dropdown">
+              <a class="nav-item nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #fff;"><i class="fa fa-user" aria-hidden="true"></i> Create Post/category
+              </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <% if (login) { %>
+                    <a class="nav-item nav-link" href="/blog/post/create">New Post</a>
+                    <a class="nav-item nav-link" href="/blog/category/create">New Category</a>
+                  <% } %>
+                </div>
+              </div>
             <div class="navbar-nav">
               <% if (login) { %>
-                <a class="nav-item nav-link" href="/blog/post/create">New Post</a>
-                <a class="nav-item nav-link" href="/blog/category/create">New Category</a>
-                <a class="nav-item nav-link" href="#">Account</a>
+                <a class="nav-item nav-link" href="/blog/author/<%= loggedInUser.id %>">Account</a>
                 <a class="nav-item nav-link" href="/blog/author/logout">Logout</a>
               <% } else { %>
                 <a class="nav-item nav-link" href="/blog/author/login">Login</a>
                 <a class="nav-item nav-link" href="/blog/author/create">Register</a>
               <% } %>
-                
+              <a class="nav-item nav-link" href="/blog/category/categories">Categories</a>
             </div>
           </div>
         </div>

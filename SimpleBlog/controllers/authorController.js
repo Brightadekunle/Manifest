@@ -1,6 +1,7 @@
 const models = require('../models')
 const bcrypt = require('bcrypt-nodejs')
 const passport = require('passport')
+const path = require('path')
 
 const authorCreateGet = (req, res, next) => {
     res.render('register', { title: "Author Create Page", success_msg: "", error_msg: "" })
@@ -74,6 +75,7 @@ const authorCreatePost = (req, res, next) => {
                             //     message: "Author created successfully",
                             //     Author: author
                             // })
+                            req.flash('success_message', "User created successfully")
                             res.redirect('/blog/author/login')
                         })
                         .catch(err => console.log(err))
@@ -92,7 +94,7 @@ const authorSigninGet = (req, res, next) => {
 const authorSigninPost = (req, res, next) => {
     passport.authenticate('local', {
         successRedirect: '/blog',
-        failureRedirect: '/blog/auhor/login',
+        failureRedirect: '/blog/author/login',
         failureFlash: true,
         successFlash: true,
         session: true
@@ -106,23 +108,44 @@ const authorLogout = (req, res, next) => {
     res.redirect('/blog/author/login')
 }
 
+const authorUpdateGet = (req, res, next) => {
+    models.Author.findByPk(req.params.author_id)
+        .then(author => {
+            res.render('authorupdate', { title: "Author Update Page", author: author })
+        })
+        .catch(err => console.log(err))
+}
+
 const authorUpdatePost = (req, res, next) => {
+
+    let filename = ''
+
+    if (!isEmpty(req.files)) {
+        let file = req.files.profilePicture
+        filename = file.name
+        let uploadDir = path.join(path.dirname(require.main.filename), '/public/profiles/')
+        file.mv(uploadDir+filename, (err) => {
+            if (err) throw err
+        })
+    }
+    let picture = "public/profiles/" + filename
+
     models.Author.update({
-        first_name: req.body.firstname,
-        last_name: req.body.lastname,
         username: req.body.username,
-        email: req.body.email
+        email: req.body.email,
+        profilePicture: picture
     }, {
         where: {
             id: req.params.author_id
         }
     })
         .then(author => {
-            console.log(author)
-            res.status(200).json({
-                message: "Author updated successfully",
-                author: author
-            })
+            // console.log(author)
+            // res.status(200).json({
+            //     message: "Author updated successfully",
+            //     author: author
+            // })
+            res.redirect(`/blog/author/${req.user.id}`)
         })
         .catch(err => console.log(err))
 }
@@ -145,16 +168,28 @@ const authorDeletePost = (req, res, next) => {
 
 const authorDetailOneGet = (req, res, next) => {
     models.Author.findOne({
+        include: [models.Post],
         where: {
             id: req.params.author_id
         }
     })
         .then(author => {
-            console.log(author)
-            res.status(200).json({
-                message: "These are the details of a single author.",
-                AuthorDetails: author
+            // console.log(author)
+            // res.status(200).json({
+            //     message: "These are the details of a single author.",
+            //     AuthorDetails: author
+            // })
+            models.Post.findAll({
+                include: [models.Author],
+                where: {
+                    AuthorId: author.id
+                }
             })
+                .then(posts => {
+                    res.render('authordetail', { title: "Author Detail Page", author: author, posts })
+                })
+                .catch(err => console.log(err))
+            
         })
         .catch(err => console.log(err))
         
@@ -187,4 +222,5 @@ module.exports = {
     authorSigninGet,
     authorSigninPost,
     authorLogout,
+    authorUpdateGet,
 }

@@ -1,11 +1,11 @@
 <div class="">
-    <%- include('./messages.ejs') %>
     <form method="POST" action="">
             <div class="form-control" style="width: 500px; margin: 0 auto;">
+                <%- include('./messages.ejs') %>
                 <legend class="border-bottom mb-4">Login</legend>
                 <div class="form-group">
                     <h5>Email</h5>
-                    <input type="email" name="email" class="form-control">
+                    <input type="email" name="email" class="form-control" value="<%= typeof email != 'undefined' ? email : '' %>"">
                 </div>
                 <div class="form-group">
                     <h5>Password</h5>

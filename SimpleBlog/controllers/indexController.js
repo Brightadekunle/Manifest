@@ -1,6 +1,7 @@
 const models = require('../models')
 
 const indexGet = (req, res, next) => {
+
     models.Post.findAll({
         include: [models.Author]
     })

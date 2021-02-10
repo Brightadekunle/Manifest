@@ -68,22 +68,40 @@ const categoryDeletePost = (req, res, next) => {
 }
 
 const categoryDetailOneGet = (req, res, next) => {
-    models.Category.findOne({
-        where: {
-            id: req.params.category_id
-        }
-    })
+    models.Category.findByPk(req.params.category_id)
         .then(category => {
-            // console.log(category)
-            res.status(200).json({
-                message: "These are the details of a single category.",
-                categoryDetails: category
+            models.PostCategory.findAll({
+                include: [models.Post],
+                where: {
+                    CategoryId: category.id
+                }
             })
-        })
+                .then(posts => {
+                    console.log(posts)
+                    res.render('categorydetail', { title: "Category Detail Page", category, posts })
+                })
+        } )
         .catch(err => console.log(err))
+}
+
+// const categoryPostGet = (req, res, next) => {
+//     models.PostCategory.findAll({
+//         where: {
+//             CategoryId: req.params.category_id
+//         }
+//     })
+//         .then(posts => {
+//             // console.log(category)
+//             // res.status(200).json({
+//             //     message: "These are the details of a single category.",
+//             //     categoryDetails: category
+//             // })
+//             res.render('categorydetail', { title: "Category Detail Page", posts })
+//         })
+//         .catch(err => console.log(err))
         
 
-}
+// }
 
 
 const categoryDetailAllGet = (req, res, next) => {

@@ -2,7 +2,7 @@
     <img class="rounded-circle article-img" src="#">
     <div class="media-body">
       <div class="article-metadata">
-        <a class="mr-2" href="#"><%= post.Author.username %></a>
+        <a class="mr-2" href="/blog/author/<%= post.Author.id %>"><%= post.Author.username %></a>
         <small class="text-muted"><%= post.createdAt %></small>
         <!-- {% if post.author == current_user %} -->
           <div>

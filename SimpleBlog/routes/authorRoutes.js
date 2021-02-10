@@ -14,6 +14,8 @@ router.post('/login', authorController.authorSigninPost)
 
 router.get('/logout', authorController.authorLogout)
 
+router.get('/update/:author_id', authorController.authorUpdateGet)
+
 router.post('/update/:author_id', authorController.authorUpdatePost)
 
 router.delete('/delete/:author_id', authorController.authorDeletePost)

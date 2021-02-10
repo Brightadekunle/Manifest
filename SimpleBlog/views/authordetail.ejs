@@ -1,0 +1,25 @@
+<div class="content-section">
+    <div class="media">
+      <img class="rounded-circle account-img" src="#">
+      <div class="media-body">
+        <h2 class="account-heading"><%= author.username %></h2>
+        <p class="text-secondary"><%= author.email %></p>
+        <a class="btn btn-primary" href="/blog/author/update/<%= author.id %>">Update</a>  
+      </div>
+    </div>
+  </div>
+
+  <h4>Posts by <%= author.username %></h4>
+  <% posts.forEach(post => { %>
+    <article class="media content-section">
+      <img class="rounded-circle article-img" src="#">
+      <div class="media-body">
+        <div class="article-metadata">
+          <a class="mr-2" href="/blog/author/<%= author.id %>"><%=  %></a>
+          <small class="text-muted"><%= post.createdAt %></small>
+        </div>
+        <h2><a class="article-title" href="/blog/post/<%= post.id %>"><%= post.post_title %></a></h2>
+        <p class="article-content"><%= post.post_body %></p>
+      </div>
+    </article>
+<% }) %>
