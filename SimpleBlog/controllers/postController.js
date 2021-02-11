@@ -107,10 +107,11 @@ const postDetailOneGet = (req, res, next) => {
             //     message: "These are the details of a single post.",
             //     PostDetails: post
             // })
-            models.Comment.findAll(post.id, {
+            models.Comment.findAll({
                 include: [models.Author]
             })
                 .then((comments) => {
+                    // console.log(comments)
                     res.render('post', { title: "Post Page", post: post, comments })
                 })
                 .catch(err => console.log(err))

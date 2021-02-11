@@ -2,20 +2,26 @@ const models = require('../models')
 
 const commentCreatePost = (req, res, next) => {
 
-    let postId = parseInt(req.params.postId)
-    models.Comment.create({
-        body: req.body.comment,
-        AuthorId: req.user.id,
-        PostId: postId,
-    })
-        .then(comment => {
-            // res.status(201).json({
-            //     message: "Comment created successfully",
-            //     comment: comment
-            // })
-            res.redirect(`/blog/post/${postId}`)
+    if (req.user){
+        let postId = parseInt(req.params.postId)
+        models.Comment.create({
+            body: req.body.comment,
+            AuthorId: req.user.id,
+            PostId: postId,
         })
-        .catch(err => console.log(err))
+            .then(comment => {
+                // res.status(201).json({
+                //     message: "Comment created successfully",
+                //     comment: comment
+                // })
+                res.redirect(`/blog/post/${postId}`)
+            })
+            .catch(err => console.log(err))
+    } else {
+        res.json({
+            msg: "You must be logged in to access this resource"
+        })
+    }
 }
 
 const commentUpdatePost = (req, res, next) => {

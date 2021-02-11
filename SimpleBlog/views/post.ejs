@@ -4,11 +4,14 @@
       <div class="article-metadata">
         <a class="mr-2" href="/blog/author/<%= post.Author.id %>"><%= post.Author.username %></a>
         <small class="text-muted"><%= post.createdAt %></small>
-        <% if (post.Author.username == loggedInUser.username) { %>
-          <div>
-            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="/blog/post/update/<%= post.id %>">Update</a>
-            <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
-          </div>
+        <% if (loggedInUser) { %>
+          <% if (post.Author.username == loggedInUser.username) { %>
+            <div>
+              <a class="btn btn-secondary btn-sm mt-1 mb-1" href="/blog/post/update/<%= post.id %>">Update</a>
+              <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+            </div>
+          <% } %>
+        <% } else { %>
         <% } %>
       </div>
       <h2 class="article-title"><%= post.post_title %></h2>
@@ -33,13 +36,20 @@
 
 <div id="comments">
   <% post.Comments.forEach(comment => { %>
+  <% let author = ""; %>
   <div class="media mb-4">
       <img src="" class="d-flex mr-3 comment-img" onerror="this.src = 'http://placehold.it/100x100'">
       <div class="media-body">
-          <h5 class="mt-0"><%= comment.Author %></h5>
-          <%= comment.body %>
-          
+        <% comments.forEach(com => { %>
+        <% if (com.AuthorId == comment.AuthorId) { %>
+          <% author = com.Author.username;
+          %>
+        <% } %>
+        <% }) %>
+        <h5 class="mt-0"><%= author %></h5>
+        <%= comment.body %>
       </div>
+      
   </div>
   <% }) %>
 </div>
