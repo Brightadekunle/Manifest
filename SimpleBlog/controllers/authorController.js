@@ -2,6 +2,7 @@ const models = require('../models')
 const bcrypt = require('bcrypt-nodejs')
 const passport = require('passport')
 const path = require('path')
+const { isEmpty } = require('../config/customFunction')
 
 const authorCreateGet = (req, res, next) => {
     res.render('register', { title: "Author Create Page", success_msg: "", error_msg: "" })
@@ -128,6 +129,7 @@ const authorUpdatePost = (req, res, next) => {
             if (err) throw err
         })
     }
+    
     let picture = "public/profiles/" + filename
 
     models.Author.update({
@@ -145,6 +147,7 @@ const authorUpdatePost = (req, res, next) => {
             //     message: "Author updated successfully",
             //     author: author
             // })
+            req.flash('success_message', "Profile updated successfully")
             res.redirect(`/blog/author/${req.user.id}`)
         })
         .catch(err => console.log(err))

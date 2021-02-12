@@ -63,6 +63,7 @@ const postUpdatePost = async (req, res, next) => {
     models.Post.update({
         post_title: req.body.post_title,
         post_body: req.body.post_body,
+        
     }, {
         where: {
             id: req.params.post_id

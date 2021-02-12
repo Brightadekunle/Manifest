@@ -6,7 +6,7 @@ const ejsLayout = require('express-ejs-layouts')
 const session = require('cookie-session')
 const flash = require('connect-flash')
 const passport = require('passport')
-// const fileUpload = require('express-fileupload')
+const fileUpload = require('express-fileupload')
 const models = require('./models')
 const initializePassport = require('./config/passport')
 
@@ -44,7 +44,7 @@ app.use(passport.session())
 app.use(flash())
 
 // File upload middleware
-// app.use(fileUpload())
+app.use(fileUpload())
 
 app.use(function (req, res, next) {
   res.locals.login = req.isAuthenticated()

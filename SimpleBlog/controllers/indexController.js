@@ -6,6 +6,7 @@ const indexGet = (req, res, next) => {
         include: [models.Author]
     })
         .then(posts => {
+            console.log(posts)
             res.render('home', { title: "Home Page", posts })
         })
         .catch(err => console.log(err))

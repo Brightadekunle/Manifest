@@ -1,4 +1,5 @@
 const models = require('../models')
+const author = require('../models/author')
 
 const categoryCreateGet = (req, res, next) => {
     res.render('createcategory', { title: "Category Create Page" })
@@ -70,6 +71,7 @@ const categoryDeletePost = (req, res, next) => {
 const categoryDetailOneGet = (req, res, next) => {
     models.Category.findByPk(req.params.category_id)
         .then(category => {
+            // console.log(category)
             models.PostCategory.findAll({
                 include: [models.Post],
                 where: {
@@ -77,10 +79,10 @@ const categoryDetailOneGet = (req, res, next) => {
                 }
             })
                 .then(posts => {
-                    console.log(posts)
-                    res.render('categorydetail', { title: "Category Detail Page", category, posts })
+                        res.render('categorydetail', { title: "Category Detail Page", category, posts })
                 })
-        } )
+                .catch(err => console.log(err))
+        })
         .catch(err => console.log(err))
 }
 

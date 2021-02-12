@@ -1,6 +1,9 @@
+<% let baseUrl = "https://brightadekunleblog.herokuapp.com/" %>
 <% posts.forEach(post => { %>
+  <% console.log(post) %>
         <article class="media content-section">
-          <img class="rounded-circle article-img" src="#">
+          <% let image =  baseUrl + post.Author.profilePicture %>
+          <img class="rounded-circle account-img" src="<%= image %>" style="object-fit: cover;">
           <div class="media-body">
             <div class="article-metadata">
               <a class="mr-2" href="/blog/author/<%= post.Author.id %>"><%= post.Author.username %></a>
